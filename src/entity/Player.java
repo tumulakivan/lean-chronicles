@@ -41,6 +41,10 @@ public class Player extends Entity {
                 right2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right2.png"));
                 right3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right3.png"));
                 right4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right4.png"));
+                idle1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle1.png"));
+                idle2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle2.png"));
+                idle3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle3.png"));
+                idle4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle4.png"));
             }
             if(this.heroClass == "mage") {
                 left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/left1.png"));
@@ -51,6 +55,10 @@ public class Player extends Entity {
                 right2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/right2.png"));
                 right3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/right3.png"));
                 right4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/right4.png"));
+                idle1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/idle1.png"));
+                idle2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/idle2.png"));
+                idle3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/idle3.png"));
+                idle4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/idle4.png"));
             }
             if(this.heroClass == "outlaw") {
                 left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/left1.png"));
@@ -61,6 +69,10 @@ public class Player extends Entity {
                 right2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/right2.png"));
                 right3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/right3.png"));
                 right4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/right4.png"));
+                idle1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/idle1.png"));
+                idle2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/idle2.png"));
+                idle3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/idle3.png"));
+                idle4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/idle4.png"));
             }
         } catch(IOException e) {
             e.printStackTrace();
@@ -68,6 +80,7 @@ public class Player extends Entity {
     }
 
     public void update() {
+        // sprite direction facing
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             if(keyH.upPressed) {
                 y -= speed;
@@ -83,26 +96,32 @@ public class Player extends Entity {
                 direction = "right";
                 x += speed;
             }
+        }
 
-            spriteCounter++;
-            if(spriteCounter > 12) {
-                switch(spriteNum) {
-                    case 1:
-                        spriteNum = 2;
-                        break;
-                    case 2:
-                        spriteNum = 3;
-                        break;
-                    case 3:
-                        spriteNum = 4;
-                        break;
-                    case 4:
-                        spriteNum = 1;
-                        break;
-                }
+        // sprite idle
+        if(!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed) {
+            direction = "idle";
+        }
 
-                spriteCounter = 0;
+        // sprite animation
+        spriteCounter++;
+        if(spriteCounter > 12) {
+            switch(spriteNum) {
+                case 1:
+                    spriteNum = 2;
+                    break;
+                case 2:
+                    spriteNum = 3;
+                    break;
+                case 3:
+                    spriteNum = 4;
+                    break;
+                case 4:
+                    spriteNum = 1;
+                    break;
             }
+
+            spriteCounter = 0;
         }
     }
 
@@ -129,6 +148,16 @@ public class Player extends Entity {
                     image = right3;
                 if(spriteNum == 4)
                     image = right4;
+                break;
+            case "idle":
+                if(spriteNum == 1)
+                    image = idle1;
+                if(spriteNum == 2)
+                    image = idle2;
+                if(spriteNum == 3)
+                    image = idle3;
+                if(spriteNum == 4)
+                    image = idle4;
                 break;
         }
 
