@@ -6,7 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="69068b92-6749-42b5-9d1a-ed23d978c842" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/princess_lean/knight/test_left_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/princess_lean/knight/test_left_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/princess_lean/knight/test_left_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/princess_lean/knight/test_left_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/princess_lean/knight/test_right_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/princess_lean/knight/test_right_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/princess_lean/knight/test_right_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/princess_lean/knight/test_right_4.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/GamePanel.java" afterDir="false" />
     </list>

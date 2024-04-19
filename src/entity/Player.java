@@ -12,9 +12,12 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
-    public Player(GamePanel gp, KeyHandler keyH) {
+    String heroClass;
+
+    public Player(GamePanel gp, KeyHandler keyH, String heroClass) {
         this.gp = gp;
         this.keyH = keyH;
+        this.heroClass = heroClass;
 
         setDefaultValues();
         getPlayerImage();
@@ -29,14 +32,36 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         try {
-            left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/test_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/test_left_2.png"));
-            left3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/test_left_3.png"));
-            left4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/test_left_4.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/test_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/test_right_2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/test_right_3.png"));
-            right4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/test_right_4.png"));
+            if(this.heroClass == "knight") {
+                left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/left1.png"));
+                left2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/left2.png"));
+                left3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/left3.png"));
+                left4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/left4.png"));
+                right1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right1.png"));
+                right2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right2.png"));
+                right3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right3.png"));
+                right4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right4.png"));
+            }
+            if(this.heroClass == "mage") {
+                left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/left1.png"));
+                left2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/left2.png"));
+                left3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/left3.png"));
+                left4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/left4.png"));
+                right1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/right1.png"));
+                right2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/right2.png"));
+                right3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/right3.png"));
+                right4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/right4.png"));
+            }
+            if(this.heroClass == "outlaw") {
+                left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/left1.png"));
+                left2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/left2.png"));
+                left3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/left3.png"));
+                left4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/left4.png"));
+                right1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/right1.png"));
+                right2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/right2.png"));
+                right3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/right3.png"));
+                right4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/outlaw/right4.png"));
+            }
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -82,9 +107,6 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-        //g2.setColor(Color.WHITE);
-        //g2.fillRect(x, y, gp.tileSize, gp.tileSize);
-
         BufferedImage image = null;
 
         switch(direction) {
