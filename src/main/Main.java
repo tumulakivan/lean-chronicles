@@ -1,3 +1,5 @@
+package main;
+
 import javax.swing.*;
 
 public class Main {
@@ -13,5 +15,7 @@ public class Main {
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        gamePanel.startGameThread();
     }
 }
