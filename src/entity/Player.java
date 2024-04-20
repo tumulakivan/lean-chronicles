@@ -369,7 +369,5 @@ public class Player extends Entity {
             } else
                 g2.drawImage(left_trail_behind, left_trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
         }
-
-        // System.out.println("coords: " + x + ", " + y);
     }
 }
