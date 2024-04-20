@@ -13,7 +13,7 @@ public class Entity {
     public boolean isAttacking = false;
     public int attackDuration = 4;
     public int attackFrame = 1;
-    public int attackTime = 8;
+    public int attackTime = 12;
     public int attackCounter = 0;
 
     public int spriteCounter = 0;

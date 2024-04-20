@@ -3,6 +3,7 @@ package main;
 import javax.swing.JPanel;
 import java.awt.*;
 import entity.Player;
+import entity.Enemy;
 
 public class GamePanel extends JPanel implements Runnable {
     // Screen Settings
@@ -21,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH, "knight");
+    Enemy testOrc = new Enemy(this);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -65,12 +67,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        testOrc.update();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         player.draw(g2);
+        testOrc.draw(g2);
         g2.dispose();
     }
 }
