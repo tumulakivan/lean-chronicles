@@ -13,7 +13,8 @@ public class Player extends Entity {
     KeyHandler keyH;
 
     private String heroClass;
-    BufferedImage moveFX1_right, moveFX2_right, moveFX3_right, moveFX4_right, moveFX1_left, moveFX2_left, moveFX3_left, moveFX4_left;
+    BufferedImage moveFX1_right, moveFX2_right, moveFX3_right, moveFX4_right, moveFX1_left, moveFX2_left, moveFX3_left, moveFX4_left
+            , attackFX1_right, attackFX2_right, attackFX3_right, attackFX4_right;
 
     public Player(GamePanel gp, KeyHandler keyH, String heroClass) {
         this.gp = gp;
@@ -23,6 +24,7 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
         getMoveFXImage();
+        getAttackFXImage();
     }
 
     public void setDefaultValues() {
@@ -101,16 +103,35 @@ public class Player extends Entity {
         }
     }
 
+    public void getAttackFXImage() {
+        try {
+            attackFX1_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/right1.png"));
+            attackFX2_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/right2.png"));
+            attackFX3_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/right3.png"));
+            attackFX4_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/right4.png"));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void update() {
         // attack (right for now)
-        if(keyH.attackPressed && !isAttacking)
+        if(keyH.attackPressed && !isAttacking) {
             isAttacking = true;
+            if(attackCounter != 0)
+                attackCounter = 0;
+        }
 
         if(isAttacking) {
-            attackFrame++;
+            attackCounter++;
+            if(attackCounter >= attackTime) {
+                attackFrame++;
+                attackCounter = 0;
+            }
+
             if(attackFrame > attackDuration) {
                 isAttacking = false;
-                attackFrame = 0;
+                attackFrame = 1;
             }
         }
 
@@ -164,28 +185,66 @@ public class Player extends Entity {
         BufferedImage right_trail_behind = null;
         BufferedImage left_trail_ahead = null;
         BufferedImage left_trail_behind = null;
-        BufferedImage attack = null;
+        BufferedImage attack_right = null;
+        BufferedImage basicSlash_right = null;
+        int basicSlash_rightX = x + 15;
+        int basicSlash_rightY = y - 12;
 
         if(isAttacking) {
             switch(attackFrame) {
                 case 1:
-                    attack = right_attack1;
-                    System.out.println(attackFrame);
+                    attack_right = right_attack1;
+                    basicSlash_right = attackFX1_right;
                     break;
                 case 2:
-                    attack = right_attack2;
-                    System.out.println(attackFrame);
+                    attack_right = right_attack2;
+                    basicSlash_right = attackFX2_right;
                     break;
                 case 3:
-                    attack = right_attack3;
-                    System.out.println(attackFrame);
+                    attack_right = right_attack3;
+                    basicSlash_right = attackFX3_right;
                     break;
                 case 4:
-                    attack = right_attack4;
-                    System.out.println(attackFrame);
+                    attack_right = right_attack4;
+                    basicSlash_right = attackFX4_right;
                     break;
             }
-            g2.drawImage(attack, x, y, gp.tileSize, gp.tileSize, null);
+            switch(direction) {
+                case "left":
+                    if(spriteNum == 1) {
+                        left_trail_behind = moveFX1_left;
+                    }
+                    if(spriteNum == 2) {
+                        left_trail_behind = moveFX2_left;
+                    }
+                    if(spriteNum == 3) {
+                        left_trail_ahead = moveFX1_left;
+                        left_trail_behind = moveFX3_left;
+                    }
+                    if(spriteNum == 4) {
+                        left_trail_ahead = moveFX2_left;
+                        left_trail_behind = moveFX4_left;
+                    }
+                    break;
+                case "right":
+                    if(spriteNum == 1) {
+                        right_trail_behind = moveFX1_right;
+                    }
+                    if(spriteNum == 2) {
+                        right_trail_behind = moveFX2_right;
+                    }
+                    if(spriteNum == 3) {
+                        right_trail_ahead = moveFX1_right;
+                        right_trail_behind = moveFX3_right;
+                    }
+                    if(spriteNum == 4) {
+                        right_trail_ahead = moveFX2_right;
+                        right_trail_behind = moveFX4_right;
+                    }
+                    break;
+            }
+            g2.drawImage(attack_right, x, y, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(basicSlash_right, basicSlash_rightX, basicSlash_rightY, gp.tileSize, gp.tileSize, null);
         } else {
             switch(direction) {
                 case "left":
