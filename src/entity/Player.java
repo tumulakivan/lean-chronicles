@@ -13,8 +13,6 @@ public class Player extends Entity {
     KeyHandler keyH;
 
     private String heroClass;
-    BufferedImage moveFX1_right, moveFX2_right, moveFX3_right, moveFX4_right, moveFX1_left, moveFX2_left, moveFX3_left, moveFX4_left
-            , attackFX1_right, attackFX2_right, attackFX3_right, attackFX4_right;
 
     public Player(GamePanel gp, KeyHandler keyH, String heroClass) {
         this.gp = gp;
@@ -53,7 +51,10 @@ public class Player extends Entity {
                 right_attack2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right_attack2.png"));
                 right_attack3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right_attack3.png"));
                 right_attack4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right_attack4.png"));
-
+                left_attack1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/left_attack1.png"));
+                left_attack2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/left_attack2.png"));
+                left_attack3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/left_attack3.png"));
+                left_attack4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/left_attack4.png"));
             }
             if(this.heroClass == "mage") {
                 left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/left1.png"));
@@ -109,6 +110,10 @@ public class Player extends Entity {
             attackFX2_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/right2.png"));
             attackFX3_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/right3.png"));
             attackFX4_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/right4.png"));
+            attackFX1_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/left1.png"));
+            attackFX2_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/left2.png"));
+            attackFX3_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/left3.png"));
+            attackFX4_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/slash/image/left4.png"));
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -185,28 +190,51 @@ public class Player extends Entity {
         BufferedImage right_trail_behind = null;
         BufferedImage left_trail_ahead = null;
         BufferedImage left_trail_behind = null;
+        BufferedImage attack_left = null;
         BufferedImage attack_right = null;
+        BufferedImage basicSlash_left = null;
         BufferedImage basicSlash_right = null;
         int basicSlash_rightX = x + 15;
-        int basicSlash_rightY = y - 12;
+        int basicSlashY = y - 12;
+        int basicSlash_leftX = x - 15;
 
         if(isAttacking) {
             switch(attackFrame) {
                 case 1:
-                    attack_right = right_attack1;
-                    basicSlash_right = attackFX1_right;
+                    if(direction == "right") {
+                        attack_right = right_attack1;
+                        basicSlash_right = attackFX1_right;
+                    } else {
+                        attack_left = left_attack1;
+                        basicSlash_left = attackFX1_left;
+                    }
                     break;
                 case 2:
-                    attack_right = right_attack2;
-                    basicSlash_right = attackFX2_right;
+                    if(direction == "right") {
+                        attack_right = right_attack2;
+                        basicSlash_right = attackFX2_right;
+                    } else {
+                        attack_left = left_attack2;
+                        basicSlash_left = attackFX2_left;
+                    }
                     break;
                 case 3:
-                    attack_right = right_attack3;
-                    basicSlash_right = attackFX3_right;
+                    if(direction == "right") {
+                        attack_right = right_attack3;
+                        basicSlash_right = attackFX3_right;
+                    } else {
+                        attack_left = left_attack3;
+                        basicSlash_left = attackFX3_left;
+                    }
                     break;
                 case 4:
-                    attack_right = right_attack4;
-                    basicSlash_right = attackFX4_right;
+                    if(direction == "right") {
+                        attack_right = right_attack4;
+                        basicSlash_right = attackFX4_right;
+                    } else {
+                        attack_left = left_attack4;
+                        basicSlash_left = attackFX4_left;
+                    }
                     break;
             }
             switch(direction) {
@@ -243,8 +271,13 @@ public class Player extends Entity {
                     }
                     break;
             }
-            g2.drawImage(attack_right, x, y, gp.tileSize, gp.tileSize, null);
-            g2.drawImage(basicSlash_right, basicSlash_rightX, basicSlash_rightY, gp.tileSize, gp.tileSize, null);
+            if(direction == "right") {
+                g2.drawImage(attack_right, x, y, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(basicSlash_right, basicSlash_rightX, basicSlashY, gp.tileSize, gp.tileSize, null);
+            } else {
+                g2.drawImage(attack_left, x, y, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(basicSlash_left, basicSlash_leftX, basicSlashY, gp.tileSize, gp.tileSize, null);
+            }
         } else {
             switch(direction) {
                 case "left":
