@@ -13,7 +13,7 @@ public class Player extends Entity {
     KeyHandler keyH;
 
     private String heroClass;
-    BufferedImage moveFX1_right, moveFX2_right, moveFX3_right, moveFX4_right;
+    BufferedImage moveFX1_right, moveFX2_right, moveFX3_right, moveFX4_right, moveFX1_left, moveFX2_left, moveFX3_left, moveFX4_left;
     private boolean isMoving = false;
 
     public Player(GamePanel gp, KeyHandler keyH, String heroClass) {
@@ -29,7 +29,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         x = 100;
         y = 100;
-        speed = 4;
+        speed = 5;
         direction = "right";
     }
 
@@ -88,6 +88,10 @@ public class Player extends Entity {
             moveFX2_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left3.png"));
             moveFX3_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left4.png"));
             moveFX4_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left5.png"));
+            moveFX1_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/1.png"));
+            moveFX2_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/3.png"));
+            moveFX3_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/4.png"));
+            moveFX4_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/5.png"));
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -143,37 +147,49 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
-        BufferedImage trail_ahead = null;
-        BufferedImage trail_behind = null;
+        BufferedImage right_trail_ahead = null;
+        BufferedImage right_trail_behind = null;
+        BufferedImage left_trail_ahead = null;
+        BufferedImage left_trail_behind = null;
 
         switch(direction) {
             case "left":
-                if(spriteNum == 1)
+                if(spriteNum == 1) {
                     image = left1;
-                if(spriteNum == 2)
+                    left_trail_behind = moveFX1_left;
+                }
+                if(spriteNum == 2) {
                     image = left2;
-                if(spriteNum == 3)
+                    left_trail_behind = moveFX2_left;
+                }
+                if(spriteNum == 3) {
                     image = left3;
-                if(spriteNum == 4)
+                    left_trail_ahead = moveFX1_left;
+                    left_trail_behind = moveFX3_left;
+                }
+                if(spriteNum == 4) {
                     image = left4;
+                    left_trail_ahead = moveFX2_left;
+                    left_trail_behind = moveFX4_left;
+                }
                 break;
             case "right":
                 if(spriteNum == 1) {
                     image = right1;
-                    trail_behind = moveFX1_right;
+                    right_trail_behind = moveFX1_right;
                 }
                 if(spriteNum == 2)
                     image = right2;
-                    trail_behind = moveFX2_right;
+                    right_trail_behind = moveFX2_right;
                 if(spriteNum == 3) {
                     image = right3;
-                    trail_ahead = moveFX1_right;
-                    trail_behind = moveFX3_right;
+                    right_trail_ahead = moveFX1_right;
+                    right_trail_behind = moveFX3_right;
                 }
                 if(spriteNum == 4) {
                     image = right4;
-                    trail_ahead = moveFX2_right;
-                    trail_behind = moveFX4_right;
+                    right_trail_ahead = moveFX2_right;
+                    right_trail_behind = moveFX4_right;
                 }
                 break;
             case "idle":
@@ -188,16 +204,29 @@ public class Player extends Entity {
                 break;
         }
 
-        int trailY = y + 12;
-        int trailX_behind = x - 26;
-        int trailX_ahead = x - 15;
-
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
 
-        if(spriteNum == 2 || spriteNum == 3 || spriteNum == 4) {
-            g2.drawImage(trail_behind, trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
-            g2.drawImage(trail_ahead, trailX_ahead, trailY, gp.tileSize, gp.tileSize, null);
-        } else
-            g2.drawImage(trail_behind, trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
+        int trailY = y + 12;
+        if(direction == "right") {
+            int right_trailX_behind = x - 26;
+            int right_trailX_ahead = right_trailX_behind + 11;
+
+            if(spriteNum == 2 || spriteNum == 3 || spriteNum == 4) {
+                g2.drawImage(right_trail_behind, right_trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(right_trail_ahead, right_trailX_ahead, trailY, gp.tileSize, gp.tileSize, null);
+            } else
+                g2.drawImage(right_trail_behind, right_trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
+        }
+
+        if(direction == "left") {
+            int left_trailX_behind = x + 26;
+            int left_trailX_ahead = left_trailX_behind - 11;
+
+            if(spriteNum == 2 || spriteNum == 3 || spriteNum == 4) {
+                g2.drawImage(left_trail_behind, left_trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(left_trail_ahead, left_trailX_ahead, trailY, gp.tileSize, gp.tileSize, null);
+            } else
+                g2.drawImage(left_trail_behind, left_trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
+        }
     }
 }
