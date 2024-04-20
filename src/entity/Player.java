@@ -178,9 +178,10 @@ public class Player extends Entity {
                     image = right1;
                     right_trail_behind = moveFX1_right;
                 }
-                if(spriteNum == 2)
+                if(spriteNum == 2) {
                     image = right2;
                     right_trail_behind = moveFX2_right;
+                }
                 if(spriteNum == 3) {
                     image = right3;
                     right_trail_ahead = moveFX1_right;
