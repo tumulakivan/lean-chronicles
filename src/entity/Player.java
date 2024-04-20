@@ -122,6 +122,8 @@ public class Player extends Entity {
     public void update() {
         // attack (right for now)
         if(keyH.attackPressed && !isAttacking) {
+            System.out.println("current direction: " + direction);
+            System.out.println("previous direction: " + previousDirection);
             isAttacking = true;
             if(attackCounter != 0)
                 attackCounter = 0;
@@ -150,17 +152,20 @@ public class Player extends Entity {
             }
             else if(keyH.leftPressed) {
                 direction = "left";
+                previousDirection = direction;
                 x -= speed;
             }
             else if(keyH.rightPressed) {
                 direction = "right";
+                previousDirection = direction;
                 x += speed;
             }
         }
 
         // sprite idle
-        if(!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed)
+        if(!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed) {
             direction = "idle";
+        }
 
         // sprite animation
         spriteCounter++;
@@ -190,8 +195,10 @@ public class Player extends Entity {
         BufferedImage right_trail_behind = null;
         BufferedImage left_trail_ahead = null;
         BufferedImage left_trail_behind = null;
+        BufferedImage attack = null;
         BufferedImage attack_left = null;
         BufferedImage attack_right = null;
+        BufferedImage basicSlash = null;
         BufferedImage basicSlash_left = null;
         BufferedImage basicSlash_right = null;
         int basicSlash_rightX = x + 15;
@@ -201,40 +208,28 @@ public class Player extends Entity {
         if(isAttacking) {
             switch(attackFrame) {
                 case 1:
-                    if(direction == "right") {
-                        attack_right = right_attack1;
-                        basicSlash_right = attackFX1_right;
-                    } else {
-                        attack_left = left_attack1;
-                        basicSlash_left = attackFX1_left;
-                    }
+                    attack_right = right_attack1;
+                    basicSlash_right = attackFX1_right;
+                    attack_left = left_attack1;
+                    basicSlash_left = attackFX1_left;
                     break;
                 case 2:
-                    if(direction == "right") {
-                        attack_right = right_attack2;
-                        basicSlash_right = attackFX2_right;
-                    } else {
-                        attack_left = left_attack2;
-                        basicSlash_left = attackFX2_left;
-                    }
+                    attack_right = right_attack2;
+                    basicSlash_right = attackFX2_right;
+                    attack_left = left_attack2;
+                    basicSlash_left = attackFX2_left;
                     break;
                 case 3:
-                    if(direction == "right") {
-                        attack_right = right_attack3;
-                        basicSlash_right = attackFX3_right;
-                    } else {
-                        attack_left = left_attack3;
-                        basicSlash_left = attackFX3_left;
-                    }
+                    attack_right = right_attack3;
+                    basicSlash_right = attackFX3_right;
+                    attack_left = left_attack3;
+                    basicSlash_left = attackFX3_left;
                     break;
                 case 4:
-                    if(direction == "right") {
-                        attack_right = right_attack4;
-                        basicSlash_right = attackFX4_right;
-                    } else {
-                        attack_left = left_attack4;
-                        basicSlash_left = attackFX4_left;
-                    }
+                    attack_right = right_attack4;
+                    basicSlash_right = attackFX4_right;
+                    attack_left = left_attack4;
+                    basicSlash_left = attackFX4_left;
                     break;
             }
             switch(direction) {
@@ -272,11 +267,27 @@ public class Player extends Entity {
                     break;
             }
             if(direction == "right") {
-                g2.drawImage(attack_right, x, y, gp.tileSize, gp.tileSize, null);
-                g2.drawImage(basicSlash_right, basicSlash_rightX, basicSlashY, gp.tileSize, gp.tileSize, null);
+                attack = attack_right;
+                basicSlash = basicSlash_right;
+                g2.drawImage(attack, x, y, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(basicSlash, basicSlash_rightX, basicSlashY, gp.tileSize, gp.tileSize, null);
+            } else if(direction == "left"){
+                attack = attack_left;
+                basicSlash = basicSlash_left;
+                g2.drawImage(attack, x, y, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(basicSlash, basicSlash_leftX, basicSlashY, gp.tileSize, gp.tileSize, null);
             } else {
-                g2.drawImage(attack_left, x, y, gp.tileSize, gp.tileSize, null);
-                g2.drawImage(basicSlash_left, basicSlash_leftX, basicSlashY, gp.tileSize, gp.tileSize, null);
+                if(previousDirection == "left") {
+                    attack = attack_left;
+                    basicSlash = basicSlash_left;
+                    g2.drawImage(attack, x, y, gp.tileSize, gp.tileSize, null);
+                    g2.drawImage(basicSlash, basicSlash_leftX, basicSlashY, gp.tileSize, gp.tileSize, null);
+                } else {
+                    attack = attack_right;
+                    basicSlash = basicSlash_right;
+                    g2.drawImage(attack, x, y, gp.tileSize, gp.tileSize, null);
+                    g2.drawImage(basicSlash, basicSlash_rightX, basicSlashY, gp.tileSize, gp.tileSize, null);
+                }
             }
         } else {
             switch(direction) {
@@ -359,6 +370,6 @@ public class Player extends Entity {
                 g2.drawImage(left_trail_behind, left_trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
         }
 
-        System.out.println("coords: " + x + ", " + y);
+        // System.out.println("coords: " + x + ", " + y);
     }
 }

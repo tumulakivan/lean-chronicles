@@ -9,7 +9,7 @@ public class Entity {
             right_attack1, right_attack2, right_attack3, right_attack4, left_attack1, left_attack2, left_attack3, left_attack4,
             moveFX1_right, moveFX2_right, moveFX3_right, moveFX4_right, moveFX1_left, moveFX2_left, moveFX3_left, moveFX4_left
             , attackFX1_right, attackFX2_right, attackFX3_right, attackFX4_right, attackFX1_left, attackFX2_left, attackFX3_left, attackFX4_left;
-    public String direction;
+    public String direction, previousDirection;
     public boolean isAttacking = false;
     public int attackDuration = 4;
     public int attackFrame = 1;
