@@ -48,6 +48,10 @@ public class Player extends Entity {
                 idle2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle2.png"));
                 idle3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle3.png"));
                 idle4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle4.png"));
+                right_attack1 = ImageIO.read(getClass().getResourceAsStream("assets/pricess_lean/knight/right_attack1.png"));
+                right_attack2 = ImageIO.read(getClass().getResourceAsStream("assets/pricess_lean/knight/right_attack2.png"));
+                right_attack3 = ImageIO.read(getClass().getResourceAsStream("assets/pricess_lean/knight/right_attack3.png"));
+                right_attack4 = ImageIO.read(getClass().getResourceAsStream("assets/pricess_lean/knight/right_attack4.png"));
             }
             if(this.heroClass == "mage") {
                 left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/left1.png"));
@@ -98,6 +102,8 @@ public class Player extends Entity {
     }
 
     public void update() {
+        // attack (right for now)
+
         // sprite direction facing
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             isMoving = true;
@@ -151,6 +157,7 @@ public class Player extends Entity {
         BufferedImage right_trail_behind = null;
         BufferedImage left_trail_ahead = null;
         BufferedImage left_trail_behind = null;
+        BufferedImage attack = null;
 
         switch(direction) {
             case "left":
@@ -205,8 +212,11 @@ public class Player extends Entity {
                 break;
         }
 
+        // main character sprite
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
 
+
+        // movement dust trail
         int trailY = y + 12;
         if(direction == "right") {
             int right_trailX_behind = x - 26;
@@ -228,6 +238,20 @@ public class Player extends Entity {
                 g2.drawImage(left_trail_ahead, left_trailX_ahead, trailY, gp.tileSize, gp.tileSize, null);
             } else
                 g2.drawImage(left_trail_behind, left_trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
+        }
+
+        // attack
+        if(keyH.attackPressed) {
+            if(spriteNum == 1)
+                attack = right_attack1;
+            if(spriteNum == 2)
+                attack = right_attack2;
+            if(spriteNum == 3)
+                attack = right_attack3;
+            if(spriteNum == 4)
+                attack = right_attack4;
+
+            g2.drawImage(attack, x, y, gp.tileSize, gp.tileSize, null);
         }
     }
 }
