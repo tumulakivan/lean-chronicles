@@ -14,7 +14,6 @@ public class Player extends Entity {
 
     private String heroClass;
     BufferedImage moveFX1_right, moveFX2_right, moveFX3_right, moveFX4_right, moveFX1_left, moveFX2_left, moveFX3_left, moveFX4_left;
-    private boolean isMoving = false;
 
     public Player(GamePanel gp, KeyHandler keyH, String heroClass) {
         this.gp = gp;
@@ -48,10 +47,11 @@ public class Player extends Entity {
                 idle2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle2.png"));
                 idle3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle3.png"));
                 idle4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/idle4.png"));
-                right_attack1 = ImageIO.read(getClass().getResourceAsStream("assets/pricess_lean/knight/right_attack1.png"));
-                right_attack2 = ImageIO.read(getClass().getResourceAsStream("assets/pricess_lean/knight/right_attack2.png"));
-                right_attack3 = ImageIO.read(getClass().getResourceAsStream("assets/pricess_lean/knight/right_attack3.png"));
-                right_attack4 = ImageIO.read(getClass().getResourceAsStream("assets/pricess_lean/knight/right_attack4.png"));
+                right_attack1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right_attack1.png"));
+                right_attack2 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right_attack2.png"));
+                right_attack3 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right_attack3.png"));
+                right_attack4 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/knight/right_attack4.png"));
+
             }
             if(this.heroClass == "mage") {
                 left1 = ImageIO.read(getClass().getResourceAsStream("/assets/princess_lean/mage/left1.png"));
@@ -103,10 +103,19 @@ public class Player extends Entity {
 
     public void update() {
         // attack (right for now)
+        if(keyH.attackPressed && !isAttacking)
+            isAttacking = true;
+
+        if(isAttacking) {
+            attackFrame++;
+            if(attackFrame > attackDuration) {
+                isAttacking = false;
+                attackFrame = 0;
+            }
+        }
 
         // sprite direction facing
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-            isMoving = true;
             if(keyH.upPressed) {
                 y -= speed;
             }
@@ -124,10 +133,8 @@ public class Player extends Entity {
         }
 
         // sprite idle
-        if(!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed) {
-            isMoving = false;
+        if(!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed)
             direction = "idle";
-        }
 
         // sprite animation
         spriteCounter++;
@@ -159,62 +166,82 @@ public class Player extends Entity {
         BufferedImage left_trail_behind = null;
         BufferedImage attack = null;
 
-        switch(direction) {
-            case "left":
-                if(spriteNum == 1) {
-                    image = left1;
-                    left_trail_behind = moveFX1_left;
-                }
-                if(spriteNum == 2) {
-                    image = left2;
-                    left_trail_behind = moveFX2_left;
-                }
-                if(spriteNum == 3) {
-                    image = left3;
-                    left_trail_ahead = moveFX1_left;
-                    left_trail_behind = moveFX3_left;
-                }
-                if(spriteNum == 4) {
-                    image = left4;
-                    left_trail_ahead = moveFX2_left;
-                    left_trail_behind = moveFX4_left;
-                }
-                break;
-            case "right":
-                if(spriteNum == 1) {
-                    image = right1;
-                    right_trail_behind = moveFX1_right;
-                }
-                if(spriteNum == 2) {
-                    image = right2;
-                    right_trail_behind = moveFX2_right;
-                }
-                if(spriteNum == 3) {
-                    image = right3;
-                    right_trail_ahead = moveFX1_right;
-                    right_trail_behind = moveFX3_right;
-                }
-                if(spriteNum == 4) {
-                    image = right4;
-                    right_trail_ahead = moveFX2_right;
-                    right_trail_behind = moveFX4_right;
-                }
-                break;
-            case "idle":
-                if(spriteNum == 1)
-                    image = idle1;
-                if(spriteNum == 2)
-                    image = idle2;
-                if(spriteNum == 3)
-                    image = idle3;
-                if(spriteNum == 4)
-                    image = idle4;
-                break;
+        if(isAttacking) {
+            switch(attackFrame) {
+                case 1:
+                    attack = right_attack1;
+                    System.out.println(attackFrame);
+                    break;
+                case 2:
+                    attack = right_attack2;
+                    System.out.println(attackFrame);
+                    break;
+                case 3:
+                    attack = right_attack3;
+                    System.out.println(attackFrame);
+                    break;
+                case 4:
+                    attack = right_attack4;
+                    System.out.println(attackFrame);
+                    break;
+            }
+            g2.drawImage(attack, x, y, gp.tileSize, gp.tileSize, null);
+        } else {
+            switch(direction) {
+                case "left":
+                    if(spriteNum == 1) {
+                        image = left1;
+                        left_trail_behind = moveFX1_left;
+                    }
+                    if(spriteNum == 2) {
+                        image = left2;
+                        left_trail_behind = moveFX2_left;
+                    }
+                    if(spriteNum == 3) {
+                        image = left3;
+                        left_trail_ahead = moveFX1_left;
+                        left_trail_behind = moveFX3_left;
+                    }
+                    if(spriteNum == 4) {
+                        image = left4;
+                        left_trail_ahead = moveFX2_left;
+                        left_trail_behind = moveFX4_left;
+                    }
+                    break;
+                case "right":
+                    if(spriteNum == 1) {
+                        image = right1;
+                        right_trail_behind = moveFX1_right;
+                    }
+                    if(spriteNum == 2) {
+                        image = right2;
+                        right_trail_behind = moveFX2_right;
+                    }
+                    if(spriteNum == 3) {
+                        image = right3;
+                        right_trail_ahead = moveFX1_right;
+                        right_trail_behind = moveFX3_right;
+                    }
+                    if(spriteNum == 4) {
+                        image = right4;
+                        right_trail_ahead = moveFX2_right;
+                        right_trail_behind = moveFX4_right;
+                    }
+                    break;
+                case "idle":
+                    if(spriteNum == 1)
+                        image = idle1;
+                    if(spriteNum == 2)
+                        image = idle2;
+                    if(spriteNum == 3)
+                        image = idle3;
+                    if(spriteNum == 4)
+                        image = idle4;
+                    break;
+            }
+            // main character sprite
+            g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
         }
-
-        // main character sprite
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
-
 
         // movement dust trail
         int trailY = y + 12;
@@ -238,20 +265,6 @@ public class Player extends Entity {
                 g2.drawImage(left_trail_ahead, left_trailX_ahead, trailY, gp.tileSize, gp.tileSize, null);
             } else
                 g2.drawImage(left_trail_behind, left_trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
-        }
-
-        // attack
-        if(keyH.attackPressed) {
-            if(spriteNum == 1)
-                attack = right_attack1;
-            if(spriteNum == 2)
-                attack = right_attack2;
-            if(spriteNum == 3)
-                attack = right_attack3;
-            if(spriteNum == 4)
-                attack = right_attack4;
-
-            g2.drawImage(attack, x, y, gp.tileSize, gp.tileSize, null);
         }
     }
 }
