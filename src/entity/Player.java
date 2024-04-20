@@ -12,7 +12,9 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
 
-    String heroClass;
+    private String heroClass;
+    BufferedImage moveFX1_right, moveFX2_right, moveFX3_right, moveFX4_right;
+    private boolean isMoving = false;
 
     public Player(GamePanel gp, KeyHandler keyH, String heroClass) {
         this.gp = gp;
@@ -21,6 +23,7 @@ public class Player extends Entity {
 
         setDefaultValues();
         getPlayerImage();
+        getMoveFXImage();
     }
 
     public void setDefaultValues() {
@@ -79,9 +82,21 @@ public class Player extends Entity {
         }
     }
 
+    public void getMoveFXImage() {
+        try {
+            moveFX1_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left1.png"));
+            moveFX2_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left3.png"));
+            moveFX3_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left4.png"));
+            moveFX4_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left5.png"));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void update() {
         // sprite direction facing
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+            isMoving = true;
             if(keyH.upPressed) {
                 y -= speed;
             }
@@ -100,6 +115,7 @@ public class Player extends Entity {
 
         // sprite idle
         if(!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed) {
+            isMoving = false;
             direction = "idle";
         }
 
@@ -127,6 +143,8 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
+        BufferedImage trail_ahead = null;
+        BufferedImage trail_behind = null;
 
         switch(direction) {
             case "left":
@@ -140,14 +158,23 @@ public class Player extends Entity {
                     image = left4;
                 break;
             case "right":
-                if(spriteNum == 1)
+                if(spriteNum == 1) {
                     image = right1;
+                    trail_behind = moveFX1_right;
+                }
                 if(spriteNum == 2)
                     image = right2;
-                if(spriteNum == 3)
+                    trail_behind = moveFX2_right;
+                if(spriteNum == 3) {
                     image = right3;
-                if(spriteNum == 4)
+                    trail_ahead = moveFX1_right;
+                    trail_behind = moveFX3_right;
+                }
+                if(spriteNum == 4) {
                     image = right4;
+                    trail_ahead = moveFX2_right;
+                    trail_behind = moveFX4_right;
+                }
                 break;
             case "idle":
                 if(spriteNum == 1)
@@ -161,6 +188,16 @@ public class Player extends Entity {
                 break;
         }
 
+        int trailY = y + 12;
+        int trailX_behind = x - 26;
+        int trailX_ahead = x - 15;
+
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+
+        if(spriteNum == 2 || spriteNum == 3 || spriteNum == 4) {
+            g2.drawImage(trail_behind, trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(trail_ahead, trailX_ahead, trailY, gp.tileSize, gp.tileSize, null);
+        } else
+            g2.drawImage(trail_behind, trailX_behind, trailY, gp.tileSize, gp.tileSize, null);
     }
 }
