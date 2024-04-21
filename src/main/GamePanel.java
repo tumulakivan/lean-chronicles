@@ -3,6 +3,7 @@ package main;
 import javax.swing.JPanel;
 import java.awt.*;
 import entity.Player;
+import entity.Enemy;
 
 public class GamePanel extends JPanel implements Runnable {
     // Screen Settings
@@ -21,14 +22,11 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH, "knight");
-
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
+    Enemy testOrc = new Enemy(this);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.gray);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
@@ -38,36 +36,6 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
-    /*
-    @Override
-    public void run() {
-        double drawInterval = 1000000000/fps;
-        double nextDrawTime = System.nanoTime() + drawInterval;
-
-        while(gameThread != null) {
-            // update
-            update();
-            // draw
-            repaint();
-
-            try {
-                double remainingTime = nextDrawTime - System.nanoTime();
-                remainingTime /= 1000000;
-
-                if(remainingTime < 0) {
-                    remainingTime = 0;
-                }
-
-                Thread.sleep((long) remainingTime);
-
-                nextDrawTime += drawInterval;
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    */
 
     public void run() {
         double drawInterval = 1000000000/fps;
@@ -91,7 +59,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if(timer >= 1000000000) {
-                System.out.println("fps: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -100,12 +67,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        testOrc.update();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         player.draw(g2);
+        testOrc.draw(g2);
         g2.dispose();
     }
 }
