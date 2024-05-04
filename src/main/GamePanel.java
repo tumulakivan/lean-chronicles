@@ -2,26 +2,32 @@ package main;
 
 import javax.swing.JPanel;
 import java.awt.*;
+
+import entity.Knight;
 import entity.Player;
 import entity.Enemy;
 
 public class GamePanel extends JPanel implements Runnable {
     // Screen Settings
-    final int originalTileSize = 16; // 16x16 tile (character size)
+    final int originalTileSize = 16; // 16x16 tile
     final int scale = 3; // scale for higher screen resolution
     public final int tileSize = originalTileSize * scale;
     // 4:3 ratio
     final int maxScreenCol = 16;
     final int maxScreenRow = 12;
-    // 768x576 reso (change both resolution and ratio later when finalizing
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
+    // 768x576 resolution (change both resolution and ratio later when finalizing)
+    // final int screenWidth = tileSize * maxScreenCol;
+    // final int screenHeight = tileSize * maxScreenRow;
+
+    // 1280x720 resolution
+    final int screenWidth = 1280;
+    final int screenHeight = 720;
 
     int fps = 60;
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH, "knight");
+    Knight player = new Knight(this, keyH);
     Enemy testOrc = new Enemy(this);
 
     public GamePanel() {
