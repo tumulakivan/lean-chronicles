@@ -2,6 +2,8 @@ package main;
 
 import javax.swing.JPanel;
 import java.awt.*;
+
+import entity.Knight;
 import entity.Player;
 import entity.Enemy;
 
@@ -25,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH, "knight");
+    Knight player = new Knight(this, keyH);
     Enemy testOrc = new Enemy(this);
 
     public GamePanel() {

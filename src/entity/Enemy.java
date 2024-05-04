@@ -14,7 +14,25 @@ public class Enemy extends Entity {
         this.gp = gp;
 
         setDefaultValues();
-        getEnemyImage();
+        getEntityImage();
+    }
+
+    @Override
+    public void getMoveFXImage() {
+        if(this.speed >= 5) {
+            try {
+                moveFX1_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left1.png"));
+                moveFX2_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left3.png"));
+                moveFX3_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left4.png"));
+                moveFX4_right = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/left5.png"));
+                moveFX1_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/1.png"));
+                moveFX2_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/3.png"));
+                moveFX3_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/4.png"));
+                moveFX4_left = ImageIO.read(getClass().getResourceAsStream("/assets/fx/basic_smoke/5.png"));
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setDefaultValues() {
@@ -24,7 +42,8 @@ public class Enemy extends Entity {
         direction = "left";
     }
 
-    public void getEnemyImage() {
+    @Override
+    public void getEntityImage() {
         try {
             idle1 = ImageIO.read(getClass().getResourceAsStream("/assets/enemy/Orc_Warrior/idle1.png"));
             idle2 = ImageIO.read(getClass().getResourceAsStream("/assets/enemy/Orc_Warrior/idle2.png"));
@@ -35,6 +54,12 @@ public class Enemy extends Entity {
         }
     }
 
+    @Override
+    public void getAttackFXImage() {
+
+    }
+
+    @Override
     public void update() {
         spriteCounter++;
         if(spriteCounter > 12) {
@@ -57,6 +82,7 @@ public class Enemy extends Entity {
         }
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
